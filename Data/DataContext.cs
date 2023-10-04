@@ -7,7 +7,12 @@ namespace ProjectManagementApi.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
-        //protected override void OnModelCreating
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .ToTable(tb => tb.HasTrigger("OnUserInsert"))
+                .ToTable(tb => tb.HasTrigger("OnUserUpdate"));
+        }
 
 
         public DbSet<User> Users { get; set; }
