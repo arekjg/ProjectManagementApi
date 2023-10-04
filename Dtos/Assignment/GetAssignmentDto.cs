@@ -2,7 +2,7 @@
 
 namespace ProjectManagementApi.Dtos
 {
-    public class GetProjectDto
+    public class GetAssignmentDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -16,5 +16,6 @@ namespace ProjectManagementApi.Dtos
         public TimeSpan TimePassed { get; set; }
         public TimeSpan WorkTime { get; set; }
         public Priority Priority { get; set; }
+        public int ProjectId { get; set; }
     }
 }

@@ -79,7 +79,8 @@ namespace ProjectManagementApi.Services
                 {
                     project.Name = updatedProject.Name;
                     project.Description = updatedProject.Description;
-                    project.StatusId = updatedProject.StatusId;
+                    project.Status = updatedProject.Status;
+                    project.Deadline = updatedProject.Deadline;
                     project.Priority = updatedProject.Priority;
 
                     _context.Projects.Update(project);

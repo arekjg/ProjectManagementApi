@@ -13,6 +13,9 @@ namespace ProjectManagementApi.Helper
 
             CreateMap<Project, GetProjectDto>();
             CreateMap<AddProjectDto, Project>();
+
+            CreateMap<Assignment, GetAssignmentDto>();
+            CreateMap<AddAssignmentDto, Assignment>();
         }
     }
 }

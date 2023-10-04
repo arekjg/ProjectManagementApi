@@ -77,7 +77,7 @@ namespace ProjectManagementApi.Services
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == updatedUser.Id);
                 if (user != null)
                 {
-                    user.TypeId = updatedUser.TypeId;
+                    user.UserType = updatedUser.UserType;
                     user.FirstName = updatedUser.FirstName;
                     user.LastName = updatedUser.LastName;
                     user.SupervisorId = updatedUser.SupervisorId;

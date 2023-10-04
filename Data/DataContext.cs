@@ -10,11 +10,9 @@ namespace ProjectManagementApi.Data
         //protected override void OnModelCreating
 
 
-        public DbSet<Assignment> Assignments { get; set; }
-        public DbSet<Project> Projects { get; set; }
-        public DbSet<Status> Statuses { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<UserType> UserTypes { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Assignment> Assignments { get; set; }
 
     }
 }

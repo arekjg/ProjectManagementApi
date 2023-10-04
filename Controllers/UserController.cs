@@ -21,7 +21,7 @@ namespace ProjectManagementApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             return Ok(await _userService.GetUserById(id));
         }

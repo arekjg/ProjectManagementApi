@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProjectManagementApi.Dtos;
 using ProjectManagementApi.Interfaces;
-using ProjectManagementApi.Services;
 
 namespace ProjectManagementApi.Controllers
 {
@@ -23,7 +21,7 @@ namespace ProjectManagementApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProject(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             return Ok(await _projectService.GetProjectById(id));
         }
