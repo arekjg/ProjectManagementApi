@@ -2,7 +2,7 @@
 
 namespace ProjectManagementApi.Dtos
 {
-    public class GetAssignmentDto
+    public class GetJobDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

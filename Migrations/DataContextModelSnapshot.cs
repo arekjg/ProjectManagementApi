@@ -22,7 +22,7 @@ namespace ProjectManagementApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ProjectManagementApi.Models.Assignment", b =>
+            modelBuilder.Entity("ProjectManagementApi.Models.Job", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,7 +70,7 @@ namespace ProjectManagementApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Assignments");
+                    b.ToTable("Jobs");
                 });
 
             modelBuilder.Entity("ProjectManagementApi.Models.Project", b =>
@@ -163,7 +163,12 @@ namespace ProjectManagementApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", t =>
+                        {
+                            t.HasTrigger("OnUserInsert");
+
+                            t.HasTrigger("OnUserUpdate");
+                        });
                 });
 #pragma warning restore 612, 618
         }
