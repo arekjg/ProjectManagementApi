@@ -4,6 +4,7 @@ using ProjectManagementApi.Data;
 using ProjectManagementApi.Dtos;
 using ProjectManagementApi.Interfaces;
 using ProjectManagementApi.Models;
+using System.Net;
 
 namespace ProjectManagementApi.Services
 {
@@ -21,9 +22,17 @@ namespace ProjectManagementApi.Services
         public async Task<ServiceResponse<List<GetJobDto>>> AddJob(AddJobDto newJob)
         {
             ServiceResponse<List<GetJobDto>> serviceResponse = new ServiceResponse<List<GetJobDto>>();
-            await _context.Jobs.AddAsync(_mapper.Map<Job>(newJob));
-            await _context.SaveChangesAsync();
-            serviceResponse.Data = _context.Jobs.Select(p => _mapper.Map<GetJobDto>(p)).ToList();
+            try
+            {
+                await _context.Jobs.AddAsync(_mapper.Map<Job>(newJob));
+                await _context.SaveChangesAsync();
+                serviceResponse.Data = _context.Jobs.Select(p => _mapper.Map<GetJobDto>(p)).ToList();
+            }
+            catch (Exception e)
+            {
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
+                serviceResponse.Message = e.Message;
+            }
             return serviceResponse;
         }
 
@@ -41,13 +50,13 @@ namespace ProjectManagementApi.Services
                 }
                 else
                 {
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = "Job not found.";
+                    serviceResponse.Code = HttpStatusCode.NotFound;
+                    serviceResponse.Message = $"Job with ID = {id} not found.";
                 }
             }
             catch (Exception e)
             {
-                serviceResponse.Success = false;
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
                 serviceResponse.Message = e.Message;
             }
             return serviceResponse;
@@ -56,16 +65,40 @@ namespace ProjectManagementApi.Services
         public async Task<ServiceResponse<List<GetJobDto>>> GetAllJobs()
         {
             ServiceResponse<List<GetJobDto>> serviceResponse = new ServiceResponse<List<GetJobDto>>();
-            var jobs = await _context.Jobs.Select(p => _mapper.Map<GetJobDto>(p)).ToListAsync();
-            serviceResponse.Data = jobs;
+            try
+            {
+                var jobs = await _context.Jobs.Select(p => _mapper.Map<GetJobDto>(p)).ToListAsync();
+                serviceResponse.Data = jobs;
+            }
+            catch (Exception e)
+            {
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
+                serviceResponse.Message = e.Message;
+            }
             return serviceResponse;
         }
 
         public async Task<ServiceResponse<GetJobDto>> GetJobById(int id)
         {
             ServiceResponse<GetJobDto> serviceResponse = new ServiceResponse<GetJobDto>();
-            var job = _mapper.Map<GetJobDto>(await _context.Jobs.FirstOrDefaultAsync(p => p.Id == id));
-            serviceResponse.Data = job;
+            try
+            {
+                var job = _mapper.Map<GetJobDto>(await _context.Jobs.FirstOrDefaultAsync(p => p.Id == id));
+                if (job != null)
+                {
+                    serviceResponse.Data = job;
+                }
+                else
+                {
+                    serviceResponse.Code = HttpStatusCode.NotFound;
+                    serviceResponse.Message = $"Job with ID = {id} not found.";
+                }
+            }
+            catch (Exception e)
+            {
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
+                serviceResponse.Message = e.Message;
+            }
             return serviceResponse;
         }
 
@@ -90,13 +123,13 @@ namespace ProjectManagementApi.Services
                 }
                 else
                 {
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = "Job not found.";
+                    serviceResponse.Code = HttpStatusCode.NotFound;
+                    serviceResponse.Message = $"Job with ID = {updatedJob.Id} not found.";
                 }
             }
             catch (Exception e)
             {
-                serviceResponse.Success = false;
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
                 serviceResponse.Message = e.Message;
             }
             return serviceResponse;

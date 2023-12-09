@@ -7,12 +7,19 @@
         EMPLOYEE
     }
 
-    public enum Status
+    public enum JobStatus
     {
         TO_DO,
         IN_PROGRESS,
         TESTING,
         DONE,
+        CLOSED
+    }
+
+    public enum ProjectStatus
+    {
+        PREPARED,
+        OPEN,
         CLOSED
     }
 

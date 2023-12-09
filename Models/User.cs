@@ -12,7 +12,7 @@ namespace ProjectManagementApi.Models
         public DateTime LastEdited { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-        public byte[] Image { get; set; }
-        public int SupervisorId { get; set; }
+        public string? Avatar { get; set; }
+        public int? SupervisorId { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using ProjectManagementApi.Data;
 using ProjectManagementApi.Dtos;
 using ProjectManagementApi.Interfaces;
 using ProjectManagementApi.Models;
+using System.Net;
 
 namespace ProjectManagementApi.Services
 {
@@ -21,9 +22,17 @@ namespace ProjectManagementApi.Services
         public async Task<ServiceResponse<List<GetProjectDto>>> AddProject(AddProjectDto newProject)
         {
             ServiceResponse<List<GetProjectDto>> serviceResponse = new ServiceResponse<List<GetProjectDto>>();
-            await _context.Projects.AddAsync(_mapper.Map<Project>(newProject));
-            await _context.SaveChangesAsync();
-            serviceResponse.Data = _context.Projects.Select(p => _mapper.Map<GetProjectDto>(p)).ToList();
+            try
+            {
+                await _context.Projects.AddAsync(_mapper.Map<Project>(newProject));
+                await _context.SaveChangesAsync();
+                serviceResponse.Data = _context.Projects.Select(p => _mapper.Map<GetProjectDto>(p)).ToList();
+            }
+            catch (Exception e)
+            {
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
+                serviceResponse.Message = e.Message;
+            }
             return serviceResponse;
         }
 
@@ -41,13 +50,13 @@ namespace ProjectManagementApi.Services
                 }
                 else
                 {
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = "Project not found.";
+                    serviceResponse.Code = HttpStatusCode.NotFound;
+                    serviceResponse.Message = $"Project with ID = {id} not found.";
                 }
             }
             catch (Exception e)
             {
-                serviceResponse.Success = false;
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
                 serviceResponse.Message = e.Message;
             }
             return serviceResponse;
@@ -56,16 +65,40 @@ namespace ProjectManagementApi.Services
         public async Task<ServiceResponse<List<GetProjectDto>>> GetAllProjects()
         {
             ServiceResponse<List<GetProjectDto>> serviceResponse = new ServiceResponse<List<GetProjectDto>>();
-            var projects = await _context.Projects.Select(p => _mapper.Map<GetProjectDto>(p)).ToListAsync();
-            serviceResponse.Data = projects;
+            try
+            {
+                var projects = await _context.Projects.Select(p => _mapper.Map<GetProjectDto>(p)).ToListAsync();
+                serviceResponse.Data = projects;
+            }
+            catch (Exception e)
+            {
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
+                serviceResponse.Message = e.Message;
+            }
             return serviceResponse;
         }
 
         public async Task<ServiceResponse<GetProjectDto>> GetProjectById(int id)
         {
             ServiceResponse<GetProjectDto> serviceResponse = new ServiceResponse<GetProjectDto>();
-            var project = _mapper.Map<GetProjectDto>(await _context.Projects.FirstOrDefaultAsync(p => p.Id == id));
-            serviceResponse.Data = project;
+            try
+            {
+                var project = _mapper.Map<GetProjectDto>(await _context.Projects.FirstOrDefaultAsync(p => p.Id == id));
+                if (project != null)
+                {
+                    serviceResponse.Data = project;
+                }
+                else
+                {
+                    serviceResponse.Code = HttpStatusCode.NotFound;
+                    serviceResponse.Message = $"Project with ID = {id} not found.";
+                }
+            }
+            catch (Exception e)
+            {
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
+                serviceResponse.Message = e.Message;
+            }
             return serviceResponse;
         }
 
@@ -90,13 +123,13 @@ namespace ProjectManagementApi.Services
                 }
                 else
                 {
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = "Project not found.";
+                    serviceResponse.Code = HttpStatusCode.NotFound;
+                    serviceResponse.Message = $"Project with ID = {updatedProject.Id} not found.";
                 }
             }
             catch (Exception e)
             {
-                serviceResponse.Success = false;
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
                 serviceResponse.Message = e.Message;
             }
             return serviceResponse;

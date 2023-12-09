@@ -4,6 +4,7 @@ using ProjectManagementApi.Data;
 using ProjectManagementApi.Dtos;
 using ProjectManagementApi.Interfaces;
 using ProjectManagementApi.Models;
+using System.Net;
 
 namespace ProjectManagementApi.Services
 {
@@ -21,9 +22,17 @@ namespace ProjectManagementApi.Services
         public async Task<ServiceResponse<List<GetUserDto>>> AddUser(AddUserDto newUser)
         {
             ServiceResponse<List<GetUserDto>> serviceResponse = new ServiceResponse<List<GetUserDto>>();
-            await _context.Users.AddAsync(_mapper.Map<User>(newUser));
-            await _context.SaveChangesAsync();
-            serviceResponse.Data = _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToList();
+            try
+            {
+                await _context.Users.AddAsync(_mapper.Map<User>(newUser));
+                await _context.SaveChangesAsync();
+                serviceResponse.Data = _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToList();
+            }
+            catch (Exception e)
+            {
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
+                serviceResponse.Message = e.Message;
+            }
             return serviceResponse;
         }
 
@@ -41,13 +50,13 @@ namespace ProjectManagementApi.Services
                 }
                 else
                 {
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = "User not found.";
+                    serviceResponse.Code = HttpStatusCode.NotFound;
+                    serviceResponse.Message = $"User with ID = {id} not found.";
                 }
             }
             catch (Exception e)
             {
-                serviceResponse.Success = false;
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
                 serviceResponse.Message = e.Message;
             }
             return serviceResponse;
@@ -56,16 +65,40 @@ namespace ProjectManagementApi.Services
         public async Task<ServiceResponse<List<GetUserDto>>> GetAllUsers()
         {
             ServiceResponse<List<GetUserDto>> serviceResponse = new ServiceResponse<List<GetUserDto>>();
-            var users = await _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToListAsync();
-            serviceResponse.Data = users;
+            try
+            {
+                var users = await _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToListAsync();
+                serviceResponse.Data = users;
+            }
+            catch (Exception e)
+            {
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
+                serviceResponse.Message = e.Message;
+            }
             return serviceResponse;
         }
 
         public async Task<ServiceResponse<GetUserDto>> GetUserById(int id)
         {
             ServiceResponse<GetUserDto> serviceResponse = new ServiceResponse<GetUserDto>();
-            var user = _mapper.Map<GetUserDto>(await _context.Users.FirstOrDefaultAsync(u => u.Id == id));
-            serviceResponse.Data = user;
+            try
+            {
+                var user = _mapper.Map<GetUserDto>(await _context.Users.FirstOrDefaultAsync(u => u.Id == id));
+                if (user != null)
+                {
+                    serviceResponse.Data = user;
+                }
+                else
+                {
+                    serviceResponse.Code = HttpStatusCode.NotFound;
+                    serviceResponse.Message = $"User with ID = {id} not found.";
+                }
+            }
+            catch (Exception e)
+            {
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
+                serviceResponse.Message = e.Message;
+            }
             return serviceResponse;
         }
 
@@ -89,13 +122,13 @@ namespace ProjectManagementApi.Services
                 }
                 else
                 {
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = "User not found.";
+                    serviceResponse.Code = HttpStatusCode.NotFound;
+                    serviceResponse.Message = $"User with ID = {updatedUser.Id} not found.";
                 }
             }
             catch (Exception e)
             {
-                serviceResponse.Success = false;
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
                 serviceResponse.Message = e.Message;
             }
             return serviceResponse;

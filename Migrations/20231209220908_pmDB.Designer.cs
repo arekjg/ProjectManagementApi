@@ -12,7 +12,7 @@ using ProjectManagementApi.Data;
 namespace ProjectManagementApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231207230144_pmDB")]
+    [Migration("20231209220908_pmDB")]
     partial class pmDB
     {
         /// <inheritdoc />
@@ -46,7 +46,7 @@ namespace ProjectManagementApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Ended")
+                    b.Property<DateTime?>("Ended")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("LastEdited")
@@ -65,15 +65,30 @@ namespace ProjectManagementApi.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan>("TimePassed")
+                    b.Property<TimeSpan?>("TimePassed")
                         .HasColumnType("time");
 
-                    b.Property<TimeSpan>("WorkTime")
+                    b.Property<TimeSpan?>("WorkTime")
                         .HasColumnType("time");
 
                     b.HasKey("Id");
 
                     b.ToTable("Jobs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Created = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2515),
+                            CreatedById = 2,
+                            Deadline = new DateTime(2023, 12, 29, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2531),
+                            Description = "Build a pod for the rocket to start",
+                            LastEdited = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2525),
+                            Name = "Build a starting pod",
+                            Priority = 3,
+                            ProjectId = 1,
+                            Status = 0
+                        });
                 });
 
             modelBuilder.Entity("ProjectManagementApi.Models.Project", b =>
@@ -97,7 +112,7 @@ namespace ProjectManagementApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Ended")
+                    b.Property<DateTime?>("Ended")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("LastEdited")
@@ -113,15 +128,29 @@ namespace ProjectManagementApi.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan>("TimePassed")
+                    b.Property<TimeSpan?>("TimePassed")
                         .HasColumnType("time");
 
-                    b.Property<TimeSpan>("WorkTime")
+                    b.Property<TimeSpan?>("WorkTime")
                         .HasColumnType("time");
 
                     b.HasKey("Id");
 
                     b.ToTable("Projects");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Created = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2428),
+                            CreatedById = 2,
+                            Deadline = new DateTime(2024, 3, 18, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2451),
+                            Description = "Building a spaceship that will get us to Mars",
+                            LastEdited = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2443),
+                            Name = "Spaceship to Mars",
+                            Priority = 2,
+                            Status = 0
+                        });
                 });
 
             modelBuilder.Entity("ProjectManagementApi.Models.User", b =>
@@ -132,16 +161,15 @@ namespace ProjectManagementApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Avatar")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("Image")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
 
                     b.Property<DateTime>("LastEdited")
                         .HasColumnType("datetime2");
@@ -158,7 +186,7 @@ namespace ProjectManagementApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SupervisorId")
+                    b.Property<int?>("SupervisorId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserType")
@@ -166,11 +194,44 @@ namespace ProjectManagementApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", t =>
-                        {
-                            t.HasTrigger("OnUserInsert");
+                    b.ToTable("Users");
 
-                            t.HasTrigger("OnUserUpdate");
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Avatar = "",
+                            Created = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2030),
+                            FirstName = "Rick",
+                            LastEdited = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2087),
+                            LastName = "Sanchez",
+                            Login = "sancheezium",
+                            Password = "1234",
+                            UserType = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Avatar = "",
+                            Created = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2098),
+                            FirstName = "Morty",
+                            LastEdited = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2105),
+                            LastName = "Smith",
+                            Login = "morty",
+                            Password = "1234",
+                            UserType = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Avatar = "",
+                            Created = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2113),
+                            FirstName = "Summer",
+                            LastEdited = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2120),
+                            LastName = "Smith",
+                            Login = "sumsum",
+                            Password = "1234",
+                            UserType = 2
                         });
                 });
 #pragma warning restore 612, 618
