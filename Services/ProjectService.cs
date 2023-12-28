@@ -113,7 +113,7 @@ namespace ProjectManagementApi.Services
                     project.Name = updatedProject.Name;
                     project.Description = updatedProject.Description;
                     project.Status = updatedProject.Status;
-                    project.Deadline = updatedProject.Deadline;
+                    project.DeadlineDate = updatedProject.DeadlineDate;
                     project.Priority = updatedProject.Priority;
 
                     _context.Projects.Update(project);

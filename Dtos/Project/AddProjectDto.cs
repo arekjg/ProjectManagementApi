@@ -1,4 +1,5 @@
 ﻿using ProjectManagementApi.Helper;
+using ProjectManagementApi.Models;
 
 namespace ProjectManagementApi.Dtos
 {
@@ -7,7 +8,10 @@ namespace ProjectManagementApi.Dtos
         public string Name { get; set; }
         public string Description { get; set; }
         public ProjectStatus Status { get; set; }
-        public DateTime Deadline { get; set; }
+        public int CreatedById { get; set; }
+        public User CreatedBy { get; set; }
+        public int CreatedAtDate { get; set; }
+        public int DeadlineDate { get; set; }
         public Priority Priority { get; set; }
     }
 }

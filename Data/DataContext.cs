@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProjectManagementApi.Helper;
 using ProjectManagementApi.Models;
 
 namespace ProjectManagementApi.Data
@@ -9,15 +10,28 @@ namespace ProjectManagementApi.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Job>()
+                .HasOne(j => j.CreatedBy)
+                .WithMany()
+                .HasForeignKey(j => j.CreatedById)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Project>()
+                .HasOne(p => p.CreatedBy)
+                .WithMany()
+                .HasForeignKey(p => p.CreatedById)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
                     Id = 1,
-                    UserType = Helper.UserType.ADMIN,
+                    UserType = UserType.ADMIN,
                     FirstName = "Rick",
                     LastName = "Sanchez",
-                    Created = DateTime.Now,
-                    LastEdited = DateTime.Now,
+                    CreatedAtDate = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1,
+                    LastEdited = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1,
                     Login = "sancheezium",
                     Password = "1234",
                     Avatar = ""
@@ -25,11 +39,11 @@ namespace ProjectManagementApi.Data
                 new User
                 {
                     Id = 2,
-                    UserType = Helper.UserType.PROJECT_MANAGER,
+                    UserType = UserType.PROJECT_MANAGER,
                     FirstName = "Morty",
                     LastName = "Smith",
-                    Created = DateTime.Now,
-                    LastEdited = DateTime.Now,
+                    CreatedAtDate = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1,
+                    LastEdited = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1,
                     Login = "morty",
                     Password = "1234",
                     Avatar = ""
@@ -37,11 +51,11 @@ namespace ProjectManagementApi.Data
                 new User
                 {
                     Id = 3,
-                    UserType = Helper.UserType.EMPLOYEE,
+                    UserType = UserType.EMPLOYEE,
                     FirstName = "Summer",
                     LastName = "Smith",
-                    Created = DateTime.Now,
-                    LastEdited = DateTime.Now,
+                    CreatedAtDate = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1,
+                    LastEdited = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1,
                     Login = "sumsum",
                     Password = "1234",
                     Avatar = ""
@@ -54,12 +68,12 @@ namespace ProjectManagementApi.Data
                     Id = 1,
                     Name = "Spaceship to Mars",
                     Description = "Building a spaceship that will get us to Mars",
-                    Status = Helper.ProjectStatus.PREPARED,
+                    Status = ProjectStatus.PREPARED,
                     CreatedById = 2,
-                    Created = DateTime.Now,
-                    LastEdited = DateTime.Now,
-                    Deadline = DateTime.Now.AddDays(100),
-                    Priority = Helper.Priority.MODERATE
+                    CreatedAtDate = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1,
+                    LastEdited = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1,
+                    DeadlineDate = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1 + 100,
+                    Priority = Priority.MODERATE
                 }
             );
 
@@ -69,12 +83,12 @@ namespace ProjectManagementApi.Data
                     Id = 1,
                     Name = "Build a starting pod",
                     Description = "Build a pod for the rocket to start",
-                    Status = Helper.JobStatus.TO_DO,
+                    Status = JobStatus.TO_DO,
                     CreatedById = 2,
-                    Created = DateTime.Now,
-                    LastEdited = DateTime.Now,
-                    Deadline = DateTime.Now.AddDays(20),
-                    Priority = Helper.Priority.HIGH,
+                    CreatedAtDate = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1,
+                    LastEdited = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1,
+                    DeadlineDate = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1 + 20,
+                    Priority = Priority.HIGH,
                     ProjectId = 1
                 }
             );

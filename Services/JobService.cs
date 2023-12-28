@@ -113,7 +113,7 @@ namespace ProjectManagementApi.Services
                     job.Name = updatedJob.Name;
                     job.Description = updatedJob.Description;
                     job.Status = updatedJob.Status;
-                    job.Deadline = updatedJob.Deadline;
+                    job.DeadlineDate = updatedJob.DeadlineDate;
                     job.Priority = updatedJob.Priority;
 
                     _context.Jobs.Update(job);

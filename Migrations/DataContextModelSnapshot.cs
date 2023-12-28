@@ -30,24 +30,24 @@ namespace ProjectManagementApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("CreatedAtDate")
+                        .HasColumnType("int");
 
                     b.Property<int>("CreatedById")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Deadline")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("DeadlineDate")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("Ended")
-                        .HasColumnType("datetime2");
+                    b.Property<int?>("EndedAtDate")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("LastEdited")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("LastEdited")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -62,13 +62,17 @@ namespace ProjectManagementApi.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan?>("TimePassed")
-                        .HasColumnType("time");
+                    b.Property<int?>("TimePassed")
+                        .HasColumnType("int");
 
-                    b.Property<TimeSpan?>("WorkTime")
-                        .HasColumnType("time");
+                    b.Property<int?>("WorkTime")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Jobs");
 
@@ -76,11 +80,11 @@ namespace ProjectManagementApi.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2515),
+                            CreatedAtDate = 81449,
                             CreatedById = 2,
-                            Deadline = new DateTime(2023, 12, 29, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2531),
+                            DeadlineDate = 81469,
                             Description = "Build a pod for the rocket to start",
-                            LastEdited = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2525),
+                            LastEdited = 81449,
                             Name = "Build a starting pod",
                             Priority = 3,
                             ProjectId = 1,
@@ -96,24 +100,24 @@ namespace ProjectManagementApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("CreatedAtDate")
+                        .HasColumnType("int");
 
                     b.Property<int>("CreatedById")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Deadline")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("DeadlineDate")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("Ended")
-                        .HasColumnType("datetime2");
+                    b.Property<int?>("EndedAtDate")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("LastEdited")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("LastEdited")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -125,13 +129,15 @@ namespace ProjectManagementApi.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan?>("TimePassed")
-                        .HasColumnType("time");
+                    b.Property<int?>("TimePassed")
+                        .HasColumnType("int");
 
-                    b.Property<TimeSpan?>("WorkTime")
-                        .HasColumnType("time");
+                    b.Property<int?>("WorkTime")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
 
                     b.ToTable("Projects");
 
@@ -139,11 +145,11 @@ namespace ProjectManagementApi.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2428),
+                            CreatedAtDate = 81449,
                             CreatedById = 2,
-                            Deadline = new DateTime(2024, 3, 18, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2451),
+                            DeadlineDate = 81549,
                             Description = "Building a spaceship that will get us to Mars",
-                            LastEdited = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2443),
+                            LastEdited = 81449,
                             Name = "Spaceship to Mars",
                             Priority = 2,
                             Status = 0
@@ -161,15 +167,15 @@ namespace ProjectManagementApi.Migrations
                     b.Property<string>("Avatar")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("CreatedAtDate")
+                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("LastEdited")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("LastEdited")
+                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -191,6 +197,8 @@ namespace ProjectManagementApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SupervisorId");
+
                     b.ToTable("Users");
 
                     b.HasData(
@@ -198,9 +206,9 @@ namespace ProjectManagementApi.Migrations
                         {
                             Id = 1,
                             Avatar = "",
-                            Created = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2030),
+                            CreatedAtDate = 81449,
                             FirstName = "Rick",
-                            LastEdited = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2087),
+                            LastEdited = 81449,
                             LastName = "Sanchez",
                             Login = "sancheezium",
                             Password = "1234",
@@ -210,9 +218,9 @@ namespace ProjectManagementApi.Migrations
                         {
                             Id = 2,
                             Avatar = "",
-                            Created = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2098),
+                            CreatedAtDate = 81449,
                             FirstName = "Morty",
-                            LastEdited = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2105),
+                            LastEdited = 81449,
                             LastName = "Smith",
                             Login = "morty",
                             Password = "1234",
@@ -222,14 +230,53 @@ namespace ProjectManagementApi.Migrations
                         {
                             Id = 3,
                             Avatar = "",
-                            Created = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2113),
+                            CreatedAtDate = 81449,
                             FirstName = "Summer",
-                            LastEdited = new DateTime(2023, 12, 9, 23, 9, 7, 940, DateTimeKind.Local).AddTicks(2120),
+                            LastEdited = 81449,
                             LastName = "Smith",
                             Login = "sumsum",
                             Password = "1234",
                             UserType = 2
                         });
+                });
+
+            modelBuilder.Entity("ProjectManagementApi.Models.Job", b =>
+                {
+                    b.HasOne("ProjectManagementApi.Models.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ProjectManagementApi.Models.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("ProjectManagementApi.Models.Project", b =>
+                {
+                    b.HasOne("ProjectManagementApi.Models.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("ProjectManagementApi.Models.User", b =>
+                {
+                    b.HasOne("ProjectManagementApi.Models.User", "Supervisor")
+                        .WithMany()
+                        .HasForeignKey("SupervisorId");
+
+                    b.Navigation("Supervisor");
                 });
 #pragma warning restore 612, 618
         }

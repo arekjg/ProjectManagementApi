@@ -3,9 +3,12 @@
     public class JobEntry
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
-        public DateTime Started { get; set; }
-        public DateTime Ended { get; set; }
-        public TimeSpan TimePassed { get; set; }
+        public User User { get; set; }
+        public Job Job { get; set; }
+        public int StartedAtDate { get; set; }
+        public int StartedAtTime { get; set; }
+        public int? EndedAtDate { get; set; }
+        public int? EndedAtTime { get; set; }
+        public int? TimePassed { get; set; }
     }
 }
