@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ProjectManagementApi.Dtos;
+using ProjectManagementApi.Dtos.JobEntry;
 using ProjectManagementApi.Models;
 
 namespace ProjectManagementApi.Helper
@@ -16,6 +17,9 @@ namespace ProjectManagementApi.Helper
 
             CreateMap<Job, GetJobDto>();
             CreateMap<AddJobDto, Job>();
+
+            CreateMap<JobEntry, GetJobEntryDto>();
+            CreateMap<AddJobEntryDto, JobEntry>();
         }
     }
 }

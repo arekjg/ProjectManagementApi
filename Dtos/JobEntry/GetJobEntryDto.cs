@@ -1,6 +1,8 @@
-﻿namespace ProjectManagementApi.Models
+﻿using ProjectManagementApi.Models;
+
+namespace ProjectManagementApi.Dtos.JobEntry
 {
-    public class JobEntry
+    public class GetJobEntryDto
     {
         public int Id { get; set; }
         public int UserId { get; set; }

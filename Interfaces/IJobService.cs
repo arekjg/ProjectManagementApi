@@ -6,6 +6,8 @@ namespace ProjectManagementApi.Interfaces
     public interface IJobService
     {
         Task<ServiceResponse<List<GetJobDto>>> GetAllJobs();
+        Task<ServiceResponse<List<GetJobDto>>> GetJobsByProjectId(int id);
+        Task<ServiceResponse<List<GetJobDto>>> GetJobsByUserId(int id);
         Task<ServiceResponse<GetJobDto>> GetJobById(int id);
         Task<ServiceResponse<List<GetJobDto>>> AddJob(AddJobDto newJob);
         Task<ServiceResponse<GetJobDto>> UpdateJob(UpdateJobDto updatedJob);
