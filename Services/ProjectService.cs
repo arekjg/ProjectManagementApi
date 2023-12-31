@@ -102,6 +102,25 @@ namespace ProjectManagementApi.Services
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<List<GetProjectDto>>> GetProjectsByPMId(int id)
+        {
+            ServiceResponse<List<GetProjectDto>> serviceResponse = new ServiceResponse<List<GetProjectDto>>();
+            try
+            {
+                var projects = await _context.Projects
+                    .Where(p => p.CreatedById == id)
+                    .Select(p => _mapper.Map<GetProjectDto>(p))
+                    .ToListAsync();
+                serviceResponse.Data = projects;
+            }
+            catch (Exception e)
+            {
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
+                serviceResponse.Message = e.Message;
+            }
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<GetProjectDto>> UpdateProject(UpdateProjectDto updatedProject)
         {
             ServiceResponse<GetProjectDto> serviceResponse = new ServiceResponse<GetProjectDto>();

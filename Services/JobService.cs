@@ -26,7 +26,7 @@ namespace ProjectManagementApi.Services
             {
                 await _context.Jobs.AddAsync(_mapper.Map<Job>(newJob));
                 await _context.SaveChangesAsync();
-                serviceResponse.Data = _context.Jobs.Select(p => _mapper.Map<GetJobDto>(p)).ToList();
+                serviceResponse.Data = _context.Jobs.Select(j => _mapper.Map<GetJobDto>(j)).ToList();
             }
             catch (Exception e)
             {
@@ -41,12 +41,12 @@ namespace ProjectManagementApi.Services
             ServiceResponse<List<GetJobDto>> serviceResponse = new ServiceResponse<List<GetJobDto>>();
             try
             {
-                var job = await _context.Jobs.FirstOrDefaultAsync(p => p.Id == id);
+                var job = await _context.Jobs.FirstOrDefaultAsync(j => j.Id == id);
                 if (job != null)
                 {
                     _context.Jobs.Remove(job);
                     await _context.SaveChangesAsync();
-                    serviceResponse.Data = await _context.Jobs.Select(p => _mapper.Map<GetJobDto>(p)).ToListAsync();
+                    serviceResponse.Data = await _context.Jobs.Select(j => _mapper.Map<GetJobDto>(j)).ToListAsync();
                 }
                 else
                 {
@@ -67,7 +67,7 @@ namespace ProjectManagementApi.Services
             ServiceResponse<List<GetJobDto>> serviceResponse = new ServiceResponse<List<GetJobDto>>();
             try
             {
-                var jobs = await _context.Jobs.Select(p => _mapper.Map<GetJobDto>(p)).ToListAsync();
+                var jobs = await _context.Jobs.Select(j => _mapper.Map<GetJobDto>(j)).ToListAsync();
                 serviceResponse.Data = jobs;
             }
             catch (Exception e)
@@ -83,7 +83,7 @@ namespace ProjectManagementApi.Services
             ServiceResponse<GetJobDto> serviceResponse = new ServiceResponse<GetJobDto>();
             try
             {
-                var job = _mapper.Map<GetJobDto>(await _context.Jobs.FirstOrDefaultAsync(p => p.Id == id));
+                var job = _mapper.Map<GetJobDto>(await _context.Jobs.FirstOrDefaultAsync(j => j.Id == id));
                 if (job != null)
                 {
                     serviceResponse.Data = job;
@@ -102,12 +102,36 @@ namespace ProjectManagementApi.Services
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<List<GetJobDto>>> GetJobsByProjectId(int id)
+        {
+            ServiceResponse<List<GetJobDto>> serviceResponse = new ServiceResponse<List<GetJobDto>>();
+            try
+            {
+                var jobs = await _context.Jobs
+                    .Where(j => j.ProjectId == id)
+                    .Select(j => _mapper.Map<GetJobDto>(j))
+                    .ToListAsync();
+                serviceResponse.Data = jobs;
+            }
+            catch (Exception e)
+            {
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
+                serviceResponse.Message = e.Message;
+            }
+            return serviceResponse;
+        }
+
+        public Task<ServiceResponse<List<GetJobDto>>> GetJobsByUserId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<ServiceResponse<GetJobDto>> UpdateJob(UpdateJobDto updatedJob)
         {
             ServiceResponse<GetJobDto> serviceResponse = new ServiceResponse<GetJobDto>();
             try
             {
-                var job = await _context.Jobs.FirstOrDefaultAsync(p => p.Id == updatedJob.Id);
+                var job = await _context.Jobs.FirstOrDefaultAsync(j => j.Id == updatedJob.Id);
                 if (job != null)
                 {
                     job.Name = updatedJob.Name;

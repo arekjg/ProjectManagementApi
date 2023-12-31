@@ -4,7 +4,7 @@ using ProjectManagementApi.Interfaces;
 
 namespace ProjectManagementApi.Controllers
 {
-    [Route("api/Jobs")]
+    [Route("api/jobs")]
     [ApiController]
     public class JobController : ControllerBase
     {
@@ -25,6 +25,14 @@ namespace ProjectManagementApi.Controllers
         {
             return Ok(await _jobService.GetJobById(id));
         }
+
+        [HttpGet("project/{id}")]
+        public async Task<IActionResult> GetByProjectId(int id)
+        {
+            return Ok(await _jobService.GetJobsByProjectId(id));
+        }
+
+        // GetJobsByUserId
 
         [HttpPost]
         public async Task<IActionResult> Add(AddJobDto newJob)

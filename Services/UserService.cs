@@ -62,6 +62,44 @@ namespace ProjectManagementApi.Services
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<List<GetUserDto>>> GetAllEmployees()
+        {
+            ServiceResponse<List<GetUserDto>> serviceResponse = new ServiceResponse<List<GetUserDto>>();
+            try
+            {
+                var employees = await _context.Users
+                    .Where(u => u.UserType == Helper.UserType.EMPLOYEE)
+                    .Select(u => _mapper.Map<GetUserDto>(u))
+                    .ToListAsync();
+                serviceResponse.Data = employees;
+            }
+            catch (Exception e)
+            {
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
+                serviceResponse.Message = e.Message;
+            }
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<List<GetUserDto>>> GetAllPMs()
+        {
+            ServiceResponse<List<GetUserDto>> serviceResponse = new ServiceResponse<List<GetUserDto>>();
+            try
+            {
+                var pManagers = await _context.Users
+                    .Where(u => u.UserType == Helper.UserType.PROJECT_MANAGER)
+                    .Select(u => _mapper.Map<GetUserDto>(u))
+                    .ToListAsync();
+                serviceResponse.Data = pManagers;
+            }
+            catch (Exception e)
+            {
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
+                serviceResponse.Message = e.Message;
+            }
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<List<GetUserDto>>> GetAllUsers()
         {
             ServiceResponse<List<GetUserDto>> serviceResponse = new ServiceResponse<List<GetUserDto>>();
@@ -69,6 +107,25 @@ namespace ProjectManagementApi.Services
             {
                 var users = await _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToListAsync();
                 serviceResponse.Data = users;
+            }
+            catch (Exception e)
+            {
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
+                serviceResponse.Message = e.Message;
+            }
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<List<GetUserDto>>> GetEmployeesByPMId(int id)
+        {
+            ServiceResponse<List<GetUserDto>> serviceResponse = new ServiceResponse<List<GetUserDto>>();
+            try
+            {
+                var employees = await _context.Users
+                    .Where(u => u.SupervisorId == id)
+                    .Select(u => _mapper.Map<GetUserDto>(u))
+                    .ToListAsync();
+                serviceResponse.Data = employees;
             }
             catch (Exception e)
             {

@@ -4,7 +4,7 @@ using ProjectManagementApi.Interfaces;
 
 namespace ProjectManagementApi.Controllers
 {
-    [Route("api/Projects")]
+    [Route("api/projects")]
     [ApiController]
     public class ProjectController : ControllerBase
     {
@@ -24,6 +24,12 @@ namespace ProjectManagementApi.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             return Ok(await _projectService.GetProjectById(id));
+        }
+
+        [HttpGet("pm/{id}")]
+        public async Task<IActionResult> GetByPMId(int id)
+        {
+            return Ok(await _projectService.GetProjectsByPMId(id));
         }
 
         [HttpPost]

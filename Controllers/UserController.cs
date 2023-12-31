@@ -4,7 +4,7 @@ using ProjectManagementApi.Interfaces;
 
 namespace ProjectManagementApi.Controllers
 {
-    [Route("api/Users")]
+    [Route("api/users")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -14,16 +14,34 @@ namespace ProjectManagementApi.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            return Ok(await _userService.GetAllUsers());
-        }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             return Ok(await _userService.GetUserById(id));
+        }
+
+        [HttpGet("employees")]
+        public async Task<IActionResult> GetEmployees()
+        {
+            return Ok(await _userService.GetAllEmployees());
+        }
+
+        [HttpGet("pms")]
+        public async Task<IActionResult> GetPMs()
+        {
+            return Ok(await _userService.GetAllPMs());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
+        {
+            return Ok(await _userService.GetAllUsers());
+        }
+
+        [HttpGet("pm/{id}")]
+        public async Task<IActionResult> GetByPMId(int id)
+        {
+            return Ok(await _userService.GetEmployeesByPMId(id));
         }
 
         [HttpPost]
