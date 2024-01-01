@@ -140,7 +140,9 @@ namespace ProjectManagementApi.Services
             ServiceResponse<GetUserDto> serviceResponse = new ServiceResponse<GetUserDto>();
             try
             {
-                var user = _mapper.Map<GetUserDto>(await _context.Users.FirstOrDefaultAsync(u => u.Id == id));
+                var user = _mapper.Map<GetUserDto>(await _context.Users
+                    .Include(u => u.Supervisor)
+                    .FirstOrDefaultAsync(u => u.Id == id));
                 if (user != null)
                 {
                     serviceResponse.Data = user;

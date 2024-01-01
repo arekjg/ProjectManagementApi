@@ -36,7 +36,7 @@ namespace ProjectManagementApi.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetJobDto>>> DeteleJob(int id)
+        public async Task<ServiceResponse<List<GetJobDto>>> DeleteJob(int id)
         {
             ServiceResponse<List<GetJobDto>> serviceResponse = new ServiceResponse<List<GetJobDto>>();
             try

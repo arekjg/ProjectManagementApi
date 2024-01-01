@@ -53,7 +53,7 @@ namespace ProjectManagementApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            return Ok(await _jobService.DeteleJob(id));
+            return Ok(await _jobService.DeleteJob(id));
         }
     }
 }
