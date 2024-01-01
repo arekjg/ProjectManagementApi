@@ -10,6 +10,8 @@ namespace ProjectManagementApi.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // TODO: update all keys in all entities
+
             modelBuilder.Entity<Job>()
                 .HasOne(j => j.CreatedBy)
                 .WithMany()
@@ -59,6 +61,18 @@ namespace ProjectManagementApi.Data
                     Login = "sumsum",
                     Password = "1234",
                     Avatar = ""
+                },
+                new User
+                {
+                    Id = 4,
+                    UserType = UserType.EMPLOYEE,
+                    FirstName = "Bird",
+                    LastName = "Person",
+                    CreatedAtDate = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1,
+                    LastEdited = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1,
+                    Login = "bird_person",
+                    Password = "birb",
+                    Avatar = ""
                 }
             );
 
@@ -90,6 +104,38 @@ namespace ProjectManagementApi.Data
                     DeadlineDate = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1 + 20,
                     Priority = Priority.HIGH,
                     ProjectId = 1
+                },
+                new Job
+                {
+                    Id = 2,
+                    Name = "Build a rocket",
+                    Description = "Build a rocket to take the shuttle outside the atmosphere",
+                    Status = JobStatus.TO_DO,
+                    CreatedById = 2,
+                    CreatedAtDate = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1,
+                    LastEdited = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1,
+                    DeadlineDate = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1 + 35,
+                    Priority = Priority.MODERATE,
+                    ProjectId = 1
+                }
+            );
+
+            modelBuilder.Entity<JobEntry>().HasData(
+                new JobEntry
+                {
+                    Id = 1,
+                    UserId = 3,
+                    JobId = 1,
+                    StartedAtDate = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1,
+                    StartedAtTime = DateTimeHelper.ConvertToClarion(DateTime.Now).Item2
+                },
+                new JobEntry
+                {
+                    Id = 2,
+                    UserId = 4,
+                    JobId = 2,
+                    StartedAtDate = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1,
+                    StartedAtTime = DateTimeHelper.ConvertToClarion(DateTime.Now).Item2
                 }
             );
         }
@@ -98,6 +144,7 @@ namespace ProjectManagementApi.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Job> Jobs { get; set; }
+        public DbSet<JobEntry> JobEntries { get; set; }
 
     }
 }

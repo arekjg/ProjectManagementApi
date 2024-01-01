@@ -32,7 +32,11 @@ namespace ProjectManagementApi.Controllers
             return Ok(await _jobService.GetJobsByProjectId(id));
         }
 
-        // GetJobsByUserId
+        [HttpGet("user/{id}")]
+        public async Task<IActionResult> GetByUserId(int id)
+        {
+            return Ok(await _jobService.GetJobsByUserId(id));
+        }
 
         [HttpPost]
         public async Task<IActionResult> Add(AddJobDto newJob)

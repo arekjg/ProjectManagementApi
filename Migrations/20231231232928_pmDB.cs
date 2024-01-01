@@ -103,25 +103,80 @@ namespace ProjectManagementApi.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "JobEntries",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    JobId = table.Column<int>(type: "int", nullable: false),
+                    StartedAtDate = table.Column<int>(type: "int", nullable: false),
+                    StartedAtTime = table.Column<int>(type: "int", nullable: false),
+                    EndedAtDate = table.Column<int>(type: "int", nullable: true),
+                    EndedAtTime = table.Column<int>(type: "int", nullable: true),
+                    TimePassed = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JobEntries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_JobEntries_Jobs_JobId",
+                        column: x => x.JobId,
+                        principalTable: "Jobs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_JobEntries_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Avatar", "CreatedAtDate", "FirstName", "LastEdited", "LastName", "Login", "Password", "SupervisorId", "UserType" },
                 values: new object[,]
                 {
-                    { 1, "", 81449, "Rick", 81449, "Sanchez", "sancheezium", "1234", null, 0 },
-                    { 2, "", 81449, "Morty", 81449, "Smith", "morty", "1234", null, 1 },
-                    { 3, "", 81449, "Summer", 81449, "Smith", "sumsum", "1234", null, 2 }
+                    { 1, "", 81453, "Rick", 81453, "Sanchez", "sancheezium", "1234", null, 0 },
+                    { 2, "", 81453, "Morty", 81453, "Smith", "morty", "1234", null, 1 },
+                    { 3, "", 81453, "Summer", 81453, "Smith", "sumsum", "1234", null, 2 },
+                    { 4, "", 81453, "Bird", 81453, "Person", "bird_person", "birb", null, 2 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Projects",
                 columns: new[] { "Id", "CreatedAtDate", "CreatedById", "DeadlineDate", "Description", "EndedAtDate", "LastEdited", "Name", "Priority", "Status", "TimePassed", "WorkTime" },
-                values: new object[] { 1, 81449, 2, 81549, "Building a spaceship that will get us to Mars", null, 81449, "Spaceship to Mars", 2, 0, null, null });
+                values: new object[] { 1, 81453, 2, 81553, "Building a spaceship that will get us to Mars", null, 81453, "Spaceship to Mars", 2, 0, null, null });
 
             migrationBuilder.InsertData(
                 table: "Jobs",
                 columns: new[] { "Id", "CreatedAtDate", "CreatedById", "DeadlineDate", "Description", "EndedAtDate", "LastEdited", "Name", "Priority", "ProjectId", "Status", "TimePassed", "WorkTime" },
-                values: new object[] { 1, 81449, 2, 81469, "Build a pod for the rocket to start", null, 81449, "Build a starting pod", 3, 1, 0, null, null });
+                values: new object[,]
+                {
+                    { 1, 81453, 2, 81473, "Build a pod for the rocket to start", null, 81453, "Build a starting pod", 3, 1, 0, null, null },
+                    { 2, 81453, 2, 81488, "Build a rocket to take the shuttle outside the atmosphere", null, 81453, "Build a rocket", 2, 1, 0, null, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "JobEntries",
+                columns: new[] { "Id", "EndedAtDate", "EndedAtTime", "JobId", "StartedAtDate", "StartedAtTime", "TimePassed", "UserId" },
+                values: new object[,]
+                {
+                    { 1, null, null, 1, 81453, 176776, null, 3 },
+                    { 2, null, null, 2, 81453, 176776, null, 4 }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JobEntries_JobId",
+                table: "JobEntries",
+                column: "JobId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JobEntries_UserId",
+                table: "JobEntries",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Jobs_CreatedById",
@@ -147,6 +202,9 @@ namespace ProjectManagementApi.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "JobEntries");
+
             migrationBuilder.DropTable(
                 name: "Jobs");
 

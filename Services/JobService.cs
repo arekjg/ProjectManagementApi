@@ -83,7 +83,12 @@ namespace ProjectManagementApi.Services
             ServiceResponse<GetJobDto> serviceResponse = new ServiceResponse<GetJobDto>();
             try
             {
-                var job = _mapper.Map<GetJobDto>(await _context.Jobs.FirstOrDefaultAsync(j => j.Id == id));
+                // TODO: include children in other methods and entities
+
+                var job = _mapper.Map<GetJobDto>(await _context.Jobs
+                    .Include(j => j.CreatedBy)
+                    .Include(j => j.Project)
+                    .FirstOrDefaultAsync(j => j.Id == id));
                 if (job != null)
                 {
                     serviceResponse.Data = job;
@@ -121,9 +126,30 @@ namespace ProjectManagementApi.Services
             return serviceResponse;
         }
 
-        public Task<ServiceResponse<List<GetJobDto>>> GetJobsByUserId(int id)
+        public async Task<ServiceResponse<List<GetJobDto>>> GetJobsByUserId(int id)
         {
-            throw new NotImplementedException();
+            ServiceResponse<List<GetJobDto>> serviceResponse = new ServiceResponse<List<GetJobDto>>();
+            try
+            {
+                var jobs = await _context.Jobs
+                    .Join(
+                        _context.JobEntries,
+                        j => j.Id,
+                        je => je.JobId,
+                        (j, je) => new { Job = j, JobEntry = je }
+                    )
+                    .Where(joined => joined.JobEntry.UserId == id)
+                    .Select(joined => _mapper.Map<GetJobDto>(joined.Job))
+                    .ToListAsync();
+
+                serviceResponse.Data = jobs;
+            }
+            catch (Exception e)
+            {
+                serviceResponse.Code = HttpStatusCode.InternalServerError;
+                serviceResponse.Message = e.Message;
+            }
+            return serviceResponse;
         }
 
         public async Task<ServiceResponse<GetJobDto>> UpdateJob(UpdateJobDto updatedJob)

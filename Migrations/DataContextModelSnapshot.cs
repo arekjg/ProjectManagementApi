@@ -80,15 +80,84 @@ namespace ProjectManagementApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAtDate = 81449,
+                            CreatedAtDate = 81453,
                             CreatedById = 2,
-                            DeadlineDate = 81469,
+                            DeadlineDate = 81473,
                             Description = "Build a pod for the rocket to start",
-                            LastEdited = 81449,
+                            LastEdited = 81453,
                             Name = "Build a starting pod",
                             Priority = 3,
                             ProjectId = 1,
                             Status = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAtDate = 81453,
+                            CreatedById = 2,
+                            DeadlineDate = 81488,
+                            Description = "Build a rocket to take the shuttle outside the atmosphere",
+                            LastEdited = 81453,
+                            Name = "Build a rocket",
+                            Priority = 2,
+                            ProjectId = 1,
+                            Status = 0
+                        });
+                });
+
+            modelBuilder.Entity("ProjectManagementApi.Models.JobEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("EndedAtDate")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EndedAtTime")
+                        .HasColumnType("int");
+
+                    b.Property<int>("JobId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StartedAtDate")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StartedAtTime")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TimePassed")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JobId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("JobEntries");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            JobId = 1,
+                            StartedAtDate = 81453,
+                            StartedAtTime = 176776,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 2,
+                            JobId = 2,
+                            StartedAtDate = 81453,
+                            StartedAtTime = 176776,
+                            UserId = 4
                         });
                 });
 
@@ -145,11 +214,11 @@ namespace ProjectManagementApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAtDate = 81449,
+                            CreatedAtDate = 81453,
                             CreatedById = 2,
-                            DeadlineDate = 81549,
+                            DeadlineDate = 81553,
                             Description = "Building a spaceship that will get us to Mars",
-                            LastEdited = 81449,
+                            LastEdited = 81453,
                             Name = "Spaceship to Mars",
                             Priority = 2,
                             Status = 0
@@ -206,9 +275,9 @@ namespace ProjectManagementApi.Migrations
                         {
                             Id = 1,
                             Avatar = "",
-                            CreatedAtDate = 81449,
+                            CreatedAtDate = 81453,
                             FirstName = "Rick",
-                            LastEdited = 81449,
+                            LastEdited = 81453,
                             LastName = "Sanchez",
                             Login = "sancheezium",
                             Password = "1234",
@@ -218,9 +287,9 @@ namespace ProjectManagementApi.Migrations
                         {
                             Id = 2,
                             Avatar = "",
-                            CreatedAtDate = 81449,
+                            CreatedAtDate = 81453,
                             FirstName = "Morty",
-                            LastEdited = 81449,
+                            LastEdited = 81453,
                             LastName = "Smith",
                             Login = "morty",
                             Password = "1234",
@@ -230,12 +299,24 @@ namespace ProjectManagementApi.Migrations
                         {
                             Id = 3,
                             Avatar = "",
-                            CreatedAtDate = 81449,
+                            CreatedAtDate = 81453,
                             FirstName = "Summer",
-                            LastEdited = 81449,
+                            LastEdited = 81453,
                             LastName = "Smith",
                             Login = "sumsum",
                             Password = "1234",
+                            UserType = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Avatar = "",
+                            CreatedAtDate = 81453,
+                            FirstName = "Bird",
+                            LastEdited = 81453,
+                            LastName = "Person",
+                            Login = "bird_person",
+                            Password = "birb",
                             UserType = 2
                         });
                 });
@@ -257,6 +338,25 @@ namespace ProjectManagementApi.Migrations
                     b.Navigation("CreatedBy");
 
                     b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("ProjectManagementApi.Models.JobEntry", b =>
+                {
+                    b.HasOne("ProjectManagementApi.Models.Job", "Job")
+                        .WithMany()
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectManagementApi.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Job");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ProjectManagementApi.Models.Project", b =>
