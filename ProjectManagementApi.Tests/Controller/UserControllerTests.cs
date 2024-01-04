@@ -31,8 +31,8 @@ namespace ProjectManagementApi.Tests.Controller
             var result = await controller.GetUsers();
 
             // Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType(typeof(OkObjectResult));
+            result.Should().NotBeNull().And.BeOfType(typeof(OkObjectResult));
+            result.As<OkObjectResult>().Value.Should().NotBeNull().And.BeAssignableTo<List<GetUserDto>>();
         }
     }
 }

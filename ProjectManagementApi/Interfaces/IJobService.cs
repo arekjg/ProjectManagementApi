@@ -1,16 +1,15 @@
 ﻿using ProjectManagementApi.Dtos;
-using ProjectManagementApi.Models;
 
 namespace ProjectManagementApi.Interfaces
 {
     public interface IJobService
     {
-        Task<ServiceResponse<List<GetJobDto>>> AddJob(AddJobDto newJob);
-        Task<ServiceResponse<List<GetJobDto>>> DeleteJob(int id);
-        Task<ServiceResponse<List<GetJobDto>>> GetAllJobs();
-        Task<ServiceResponse<GetJobDto>> GetJobById(int id);
-        Task<ServiceResponse<List<GetJobDto>>> GetJobsByProjectId(int id);
-        Task<ServiceResponse<List<GetJobDto>>> GetJobsByUserId(int id);
-        Task<ServiceResponse<GetJobDto>> UpdateJob(UpdateJobDto updatedJob);
+        Task<List<GetJobDto>> AddJob(AddJobDto newJob);
+        Task<List<GetJobDto>> DeleteJob(int id);
+        Task<List<GetJobDto>> GetAllJobs();
+        Task<GetJobDto> GetJobById(int id);
+        Task<List<GetJobDto>> GetJobsByProjectId(int id);
+        Task<List<GetJobDto>> GetJobsByUserId(int id);
+        Task<GetJobDto> UpdateJob(UpdateJobDto updatedJob);
     }
 }

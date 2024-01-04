@@ -4,7 +4,6 @@ using ProjectManagementApi.Data;
 using ProjectManagementApi.Dtos;
 using ProjectManagementApi.Interfaces;
 using ProjectManagementApi.Models;
-using System.Net;
 
 namespace ProjectManagementApi.Services
 {
@@ -19,178 +18,77 @@ namespace ProjectManagementApi.Services
             _mapper = mapper;
         }
 
-        public async Task<ServiceResponse<List<GetUserDto>>> AddUser(AddUserDto newUser)
+        public async Task<List<GetUserDto>> AddUser(AddUserDto newUser)
         {
-            ServiceResponse<List<GetUserDto>> serviceResponse = new ServiceResponse<List<GetUserDto>>();
-            try
+            await _context.Users.AddAsync(_mapper.Map<User>(newUser));
+            await _context.SaveChangesAsync();
+
+            return _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToList();
+        }
+
+        public async Task<List<GetUserDto>> DeleteUser(int id)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (user != null)
             {
-                await _context.Users.AddAsync(_mapper.Map<User>(newUser));
+                _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
-                serviceResponse.Data = _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToList();
             }
-            catch (Exception e)
-            {
-                serviceResponse.Code = HttpStatusCode.InternalServerError;
-                serviceResponse.Message = e.Message;
-            }
-            return serviceResponse;
+
+            return await _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToListAsync();
         }
 
-        public async Task<ServiceResponse<List<GetUserDto>>> DeleteUser(int id)
+        public async Task<List<GetUserDto>> GetAllEmployees()
         {
-            ServiceResponse<List<GetUserDto>> serviceResponse = new ServiceResponse<List<GetUserDto>>();
-            try
-            {
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-                if (user != null)
-                {
-                    _context.Users.Remove(user);
-                    await _context.SaveChangesAsync();
-                    serviceResponse.Data = await _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToListAsync();
-                }
-                else
-                {
-                    serviceResponse.Code = HttpStatusCode.NotFound;
-                    serviceResponse.Message = $"User with ID = {id} not found.";
-                }
-            }
-            catch (Exception e)
-            {
-                serviceResponse.Code = HttpStatusCode.InternalServerError;
-                serviceResponse.Message = e.Message;
-            }
-            return serviceResponse;
+            return await _context.Users
+                .Where(u => u.UserType == Helper.UserType.EMPLOYEE)
+                .Select(u => _mapper.Map<GetUserDto>(u))
+                .ToListAsync();
         }
 
-        public async Task<ServiceResponse<List<GetUserDto>>> GetAllEmployees()
+        public async Task<List<GetUserDto>> GetAllPMs()
         {
-            ServiceResponse<List<GetUserDto>> serviceResponse = new ServiceResponse<List<GetUserDto>>();
-            try
-            {
-                var employees = await _context.Users
-                    .Where(u => u.UserType == Helper.UserType.EMPLOYEE)
-                    .Select(u => _mapper.Map<GetUserDto>(u))
-                    .ToListAsync();
-                serviceResponse.Data = employees;
-            }
-            catch (Exception e)
-            {
-                serviceResponse.Code = HttpStatusCode.InternalServerError;
-                serviceResponse.Message = e.Message;
-            }
-            return serviceResponse;
+            return await _context.Users
+                .Where(u => u.UserType == Helper.UserType.PROJECT_MANAGER)
+                .Select(u => _mapper.Map<GetUserDto>(u))
+                .ToListAsync();
         }
 
-        public async Task<ServiceResponse<List<GetUserDto>>> GetAllPMs()
+        public async Task<List<GetUserDto>> GetAllUsers()
         {
-            ServiceResponse<List<GetUserDto>> serviceResponse = new ServiceResponse<List<GetUserDto>>();
-            try
-            {
-                var pManagers = await _context.Users
-                    .Where(u => u.UserType == Helper.UserType.PROJECT_MANAGER)
-                    .Select(u => _mapper.Map<GetUserDto>(u))
-                    .ToListAsync();
-                serviceResponse.Data = pManagers;
-            }
-            catch (Exception e)
-            {
-                serviceResponse.Code = HttpStatusCode.InternalServerError;
-                serviceResponse.Message = e.Message;
-            }
-            return serviceResponse;
+            return await _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToListAsync();
         }
 
-        public async Task<ServiceResponse<List<GetUserDto>>> GetAllUsers()
+        public async Task<List<GetUserDto>> GetEmployeesByPMId(int id)
         {
-            ServiceResponse<List<GetUserDto>> serviceResponse = new ServiceResponse<List<GetUserDto>>();
-            try
-            {
-                var users = await _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToListAsync();
-                serviceResponse.Data = users;
-            }
-            catch (Exception e)
-            {
-                serviceResponse.Code = HttpStatusCode.InternalServerError;
-                serviceResponse.Message = e.Message;
-            }
-            return serviceResponse;
+            return await _context.Users
+                .Where(u => u.SupervisorId == id)
+                .Select(u => _mapper.Map<GetUserDto>(u))
+                .ToListAsync();
         }
 
-        public async Task<ServiceResponse<List<GetUserDto>>> GetEmployeesByPMId(int id)
+        public async Task<GetUserDto> GetUserById(int id)
         {
-            ServiceResponse<List<GetUserDto>> serviceResponse = new ServiceResponse<List<GetUserDto>>();
-            try
-            {
-                var employees = await _context.Users
-                    .Where(u => u.SupervisorId == id)
-                    .Select(u => _mapper.Map<GetUserDto>(u))
-                    .ToListAsync();
-                serviceResponse.Data = employees;
-            }
-            catch (Exception e)
-            {
-                serviceResponse.Code = HttpStatusCode.InternalServerError;
-                serviceResponse.Message = e.Message;
-            }
-            return serviceResponse;
+            return _mapper.Map<GetUserDto>(await _context.Users
+                .Include(u => u.Supervisor)
+                .FirstOrDefaultAsync(u => u.Id == id));
         }
 
-        public async Task<ServiceResponse<GetUserDto>> GetUserById(int id)
+        public async Task<GetUserDto> UpdateUser(UpdateUserDto updatedUser)
         {
-            ServiceResponse<GetUserDto> serviceResponse = new ServiceResponse<GetUserDto>();
-            try
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == updatedUser.Id);
+            if (user != null)
             {
-                var user = _mapper.Map<GetUserDto>(await _context.Users
-                    .Include(u => u.Supervisor)
-                    .FirstOrDefaultAsync(u => u.Id == id));
-                if (user != null)
-                {
-                    serviceResponse.Data = user;
-                }
-                else
-                {
-                    serviceResponse.Code = HttpStatusCode.NotFound;
-                    serviceResponse.Message = $"User with ID = {id} not found.";
-                }
-            }
-            catch (Exception e)
-            {
-                serviceResponse.Code = HttpStatusCode.InternalServerError;
-                serviceResponse.Message = e.Message;
-            }
-            return serviceResponse;
-        }
+                user.UserType = updatedUser.UserType;
+                user.FirstName = updatedUser.FirstName;
+                user.LastName = updatedUser.LastName;
+                user.Supervisor = updatedUser.Supervisor;
 
-        public async Task<ServiceResponse<GetUserDto>> UpdateUser(UpdateUserDto updatedUser)
-        {
-            ServiceResponse<GetUserDto> serviceResponse = new ServiceResponse<GetUserDto>();
-            try
-            {
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == updatedUser.Id);
-                if (user != null)
-                {
-                    user.UserType = updatedUser.UserType;
-                    user.FirstName = updatedUser.FirstName;
-                    user.LastName = updatedUser.LastName;
-                    user.Supervisor = updatedUser.Supervisor;
-
-                    _context.Users.Update(user);
-                    await _context.SaveChangesAsync();
-
-                    serviceResponse.Data = _mapper.Map<GetUserDto>(user);
-                }
-                else
-                {
-                    serviceResponse.Code = HttpStatusCode.NotFound;
-                    serviceResponse.Message = $"User with ID = {updatedUser.Id} not found.";
-                }
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
             }
-            catch (Exception e)
-            {
-                serviceResponse.Code = HttpStatusCode.InternalServerError;
-                serviceResponse.Message = e.Message;
-            }
-            return serviceResponse;
+
+            return _mapper.Map<GetUserDto>(user);
         }
     }
 }

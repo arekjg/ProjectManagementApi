@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectManagementApi.Dtos;
+using ProjectManagementApi.Helper;
 using ProjectManagementApi.Interfaces;
 
 namespace ProjectManagementApi.Controllers
@@ -17,37 +18,83 @@ namespace ProjectManagementApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _projectService.GetAllProjects());
+            try
+            {
+                List<GetProjectDto> projects = await _projectService.GetAllProjects();
+                return ResponseUtility.OkOrNotFound(projects);
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            return Ok(await _projectService.GetProjectById(id));
+            try
+            {
+                GetProjectDto? project = await _projectService.GetProjectById(id);
+                return ResponseUtility.OkOrNotFound(project);
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
         }
 
         [HttpGet("pm/{id}")]
         public async Task<IActionResult> GetByPMId(int id)
         {
-            return Ok(await _projectService.GetProjectsByPMId(id));
+            try
+            {
+                List<GetProjectDto> projects = await _projectService.GetProjectsByPMId(id);
+                return ResponseUtility.OkOrNotFound(projects);
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(AddProjectDto newProject)
         {
-            return Ok(await _projectService.AddProject(newProject));
+            try
+            {
+                return Ok(await _projectService.AddProject(newProject));
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(UpdateProjectDto updatedProject)
         {
-            return Ok(await _projectService.UpdateProject(updatedProject));
+            try
+            {
+                return Ok(await _projectService.UpdateProject(updatedProject));
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            return Ok(await _projectService.DeleteProject(id));
+            try
+            {
+                List<GetProjectDto> projects = await _projectService.DeleteProject(id);
+                return ResponseUtility.OkOrNotFound(projects);
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
         }
     }
 }

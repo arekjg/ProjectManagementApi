@@ -1,17 +1,16 @@
 ﻿using ProjectManagementApi.Dtos;
-using ProjectManagementApi.Models;
 
 namespace ProjectManagementApi.Interfaces
 {
     public interface IUserService
     {
-        Task<ServiceResponse<List<GetUserDto>>> AddUser(AddUserDto newUser);
-        Task<ServiceResponse<List<GetUserDto>>> DeleteUser(int id);
-        Task<ServiceResponse<List<GetUserDto>>> GetAllEmployees();
-        Task<ServiceResponse<List<GetUserDto>>> GetAllPMs();
-        Task<ServiceResponse<List<GetUserDto>>> GetAllUsers();
-        Task<ServiceResponse<List<GetUserDto>>> GetEmployeesByPMId(int id);
-        Task<ServiceResponse<GetUserDto>> GetUserById(int id);
-        Task<ServiceResponse<GetUserDto>> UpdateUser(UpdateUserDto updatedUser);
+        Task<List<GetUserDto>> AddUser(AddUserDto newUser);
+        Task<List<GetUserDto>> DeleteUser(int id);
+        Task<List<GetUserDto>> GetAllEmployees();
+        Task<List<GetUserDto>> GetAllPMs();
+        Task<List<GetUserDto>> GetAllUsers();
+        Task<List<GetUserDto>> GetEmployeesByPMId(int id);
+        Task<GetUserDto> GetUserById(int id);
+        Task<GetUserDto> UpdateUser(UpdateUserDto updatedUser);
     }
 }

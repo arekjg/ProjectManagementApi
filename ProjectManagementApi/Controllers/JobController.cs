@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectManagementApi.Dtos;
+using ProjectManagementApi.Helper;
 using ProjectManagementApi.Interfaces;
 
 namespace ProjectManagementApi.Controllers
@@ -17,43 +18,97 @@ namespace ProjectManagementApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _jobService.GetAllJobs());
+            try
+            {
+                List<GetJobDto> jobs = await _jobService.GetAllJobs();
+                return ResponseUtility.OkOrNotFound(jobs);
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            return Ok(await _jobService.GetJobById(id));
+            try
+            {
+                GetJobDto job = await _jobService.GetJobById(id);
+                return ResponseUtility.OkOrNotFound(job);
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
         }
 
         [HttpGet("project/{id}")]
         public async Task<IActionResult> GetByProjectId(int id)
         {
-            return Ok(await _jobService.GetJobsByProjectId(id));
+            try
+            {
+                List<GetJobDto> jobs = await _jobService.GetJobsByProjectId(id);
+                return ResponseUtility.OkOrNotFound(jobs);
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
         }
 
         [HttpGet("user/{id}")]
         public async Task<IActionResult> GetByUserId(int id)
         {
-            return Ok(await _jobService.GetJobsByUserId(id));
+            try
+            {
+                List<GetJobDto> jobs = await _jobService.GetJobsByUserId(id);
+                return ResponseUtility.OkOrNotFound(jobs);
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(AddJobDto newJob)
         {
-            return Ok(await _jobService.AddJob(newJob));
+            try
+            {
+                return Ok(await _jobService.AddJob(newJob));
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(UpdateJobDto updatedJob)
         {
-            return Ok(await _jobService.UpdateJob(updatedJob));
+            try
+            {
+                return Ok(await _jobService.UpdateJob(updatedJob));
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            return Ok(await _jobService.DeleteJob(id));
+            try
+            {
+                List<GetJobDto> jobs = await _jobService.DeleteJob(id);
+                return ResponseUtility.OkOrNotFound(jobs);
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
         }
     }
 }
