@@ -87,7 +87,6 @@ namespace ProjectManagementApi.Services
 
                 _context.Jobs.Update(job);
                 await _context.SaveChangesAsync();
-
             }
 
             return _mapper.Map<GetJobDto>(job);

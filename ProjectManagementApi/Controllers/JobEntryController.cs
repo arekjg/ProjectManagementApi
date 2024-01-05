@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProjectManagementApi.Dtos.JobEntry;
+using ProjectManagementApi.Dtos;
+using ProjectManagementApi.Helper;
 using ProjectManagementApi.Interfaces;
 
 namespace ProjectManagementApi.Controllers
@@ -8,7 +9,6 @@ namespace ProjectManagementApi.Controllers
     [ApiController]
     public class JobEntryController : ControllerBase
     {
-        // TODO: complete the controller, other GET methods and PUT method
         // TODO: Test the controller
 
         private readonly IJobEntryService _jobEntryService;
@@ -20,29 +20,97 @@ namespace ProjectManagementApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _jobEntryService.GetAllJobEntries());
+            try
+            {
+                List<GetJobEntryDto> jobEntries = await _jobEntryService.GetAllJobEntries();
+                return ResponseUtility.OkOrNotFound(jobEntries);
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            return Ok(await _jobEntryService.GetJobEntryById(id));
+            try
+            {
+                GetJobEntryDto jobEntry = await _jobEntryService.GetJobEntryById(id);
+                return ResponseUtility.OkOrNotFound(jobEntry);
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
         }
 
+        [HttpGet("job/{id}")]
+        public async Task<IActionResult> GetByJobId(int id)
+        {
+            try
+            {
+                List<GetJobEntryDto> jobEntries = await _jobEntryService.GetJobEntriesByJobId(id);
+                return ResponseUtility.OkOrNotFound(jobEntries);
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
+        }
 
+        [HttpGet("user/{id}")]
+        public async Task<IActionResult> GetByUserId(int id)
+        {
+            try
+            {
+                List<GetJobEntryDto> jobEntries = await _jobEntryService.GetJobEntriesByUserId(id);
+                return ResponseUtility.OkOrNotFound(jobEntries);
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> Add(AddJobEntryDto newJobEntry)
         {
-            return Ok(await _jobEntryService.AddJobEntry(newJobEntry));
+            try
+            {
+                return Ok(await _jobEntryService.AddJobEntry(newJobEntry));
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
         }
 
-
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(UpdateJobEntryDto updatedJobEntry)
+        {
+            try
+            {
+                return Ok(await _jobEntryService.UpdateJobEntry(updatedJobEntry));
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            return Ok(await _jobEntryService.DeleteJobEntry(id));
+            try
+            {
+                List<GetJobEntryDto> jobEntries = await _jobEntryService.DeleteJobEntry(id);
+                return ResponseUtility.OkOrNotFound(jobEntries);
+            }
+            catch (Exception e)
+            {
+                return ResponseUtility.InternalServerError(e);
+            }
         }
 
     }

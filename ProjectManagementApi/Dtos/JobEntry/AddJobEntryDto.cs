@@ -1,6 +1,6 @@
 ﻿using ProjectManagementApi.Models;
 
-namespace ProjectManagementApi.Dtos.JobEntry
+namespace ProjectManagementApi.Dtos
 {
     public class AddJobEntryDto
     {

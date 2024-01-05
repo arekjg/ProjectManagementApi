@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ProjectManagementApi.Dtos;
-using ProjectManagementApi.Dtos.JobEntry;
 using ProjectManagementApi.Models;
 
 namespace ProjectManagementApi.Helper
