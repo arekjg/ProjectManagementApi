@@ -139,24 +139,31 @@ namespace ProjectManagementApi.Migrations
                 columns: new[] { "Id", "Avatar", "CreatedAtDate", "FirstName", "LastEdited", "LastName", "Login", "Password", "SupervisorId", "UserType" },
                 values: new object[,]
                 {
-                    { 1, "", 81453, "Rick", 81453, "Sanchez", "sancheezium", "1234", null, 0 },
-                    { 2, "", 81453, "Morty", 81453, "Smith", "morty", "1234", null, 1 },
-                    { 3, "", 81453, "Summer", 81453, "Smith", "sumsum", "1234", null, 2 },
-                    { 4, "", 81453, "Bird", 81453, "Person", "bird_person", "birb", null, 2 }
+                    { 1, "", 81458, "Rick", 81458, "Sanchez", "sancheezium", "1234", null, 0 },
+                    { 2, "", 81458, "Morty", 81458, "Smith", "morty", "1234", null, 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Projects",
                 columns: new[] { "Id", "CreatedAtDate", "CreatedById", "DeadlineDate", "Description", "EndedAtDate", "LastEdited", "Name", "Priority", "Status", "TimePassed", "WorkTime" },
-                values: new object[] { 1, 81453, 2, 81553, "Building a spaceship that will get us to Mars", null, 81453, "Spaceship to Mars", 2, 0, null, null });
+                values: new object[] { 1, 81458, 2, 81558, "Building a spaceship that will get us to Mars", null, 81458, "Spaceship to Mars", 2, 0, null, null });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Avatar", "CreatedAtDate", "FirstName", "LastEdited", "LastName", "Login", "Password", "SupervisorId", "UserType" },
+                values: new object[,]
+                {
+                    { 3, "", 81458, "Summer", 81458, "Smith", "sumsum", "1234", 2, 2 },
+                    { 4, "", 81458, "Bird", 81458, "Person", "bird_person", "birb", 2, 2 }
+                });
 
             migrationBuilder.InsertData(
                 table: "Jobs",
                 columns: new[] { "Id", "CreatedAtDate", "CreatedById", "DeadlineDate", "Description", "EndedAtDate", "LastEdited", "Name", "Priority", "ProjectId", "Status", "TimePassed", "WorkTime" },
                 values: new object[,]
                 {
-                    { 1, 81453, 2, 81473, "Build a pod for the rocket to start", null, 81453, "Build a starting pod", 3, 1, 0, null, null },
-                    { 2, 81453, 2, 81488, "Build a rocket to take the shuttle outside the atmosphere", null, 81453, "Build a rocket", 2, 1, 0, null, null }
+                    { 1, 81458, 2, 81478, "Build a pod for the rocket to start", null, 81458, "Build a starting pod", 3, 1, 0, null, null },
+                    { 2, 81458, 2, 81493, "Build a rocket to take the shuttle outside the atmosphere", null, 81458, "Build a rocket", 2, 1, 0, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -164,8 +171,8 @@ namespace ProjectManagementApi.Migrations
                 columns: new[] { "Id", "EndedAtDate", "EndedAtTime", "JobId", "StartedAtDate", "StartedAtTime", "TimePassed", "UserId" },
                 values: new object[,]
                 {
-                    { 1, null, null, 1, 81453, 176776, null, 3 },
-                    { 2, null, null, 2, 81453, 176776, null, 4 }
+                    { 1, null, null, 1, 81458, 7206727, null, 3 },
+                    { 2, null, null, 2, 81458, 7206727, null, 4 }
                 });
 
             migrationBuilder.CreateIndex(

@@ -14,7 +14,7 @@ namespace ProjectManagementApi.Dtos
         public string Login { get; set; }
         public string Password { get; set; }
         public string? Avatar { get; set; }
-        //public int? SupervisorId { get; set; }
+        public int? SupervisorId { get; set; }
         public User? Supervisor { get; set; }
     }
 }

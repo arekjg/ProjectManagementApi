@@ -60,7 +60,8 @@ namespace ProjectManagementApi.Data
                     LastEdited = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1,
                     Login = "sumsum",
                     Password = "1234",
-                    Avatar = ""
+                    Avatar = "",
+                    SupervisorId = 2
                 },
                 new User
                 {
@@ -72,7 +73,8 @@ namespace ProjectManagementApi.Data
                     LastEdited = DateTimeHelper.ConvertToClarion(DateTime.Now).Item1,
                     Login = "bird_person",
                     Password = "birb",
-                    Avatar = ""
+                    Avatar = "",
+                    SupervisorId = 2
                 }
             );
 

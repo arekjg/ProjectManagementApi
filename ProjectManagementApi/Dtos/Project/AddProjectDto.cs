@@ -9,7 +9,6 @@ namespace ProjectManagementApi.Dtos
         public string Description { get; set; }
         public ProjectStatus Status { get; set; }
         public int CreatedById { get; set; }
-        public User CreatedBy { get; set; }
         public int CreatedAtDate { get; set; }
         public int DeadlineDate { get; set; }
         public Priority Priority { get; set; }

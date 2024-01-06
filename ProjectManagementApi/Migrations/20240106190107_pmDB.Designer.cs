@@ -12,7 +12,7 @@ using ProjectManagementApi.Data;
 namespace ProjectManagementApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231231232928_pmDB")]
+    [Migration("20240106190107_pmDB")]
     partial class pmDB
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace ProjectManagementApi.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "7.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -83,11 +83,11 @@ namespace ProjectManagementApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAtDate = 81453,
+                            CreatedAtDate = 81458,
                             CreatedById = 2,
-                            DeadlineDate = 81473,
+                            DeadlineDate = 81478,
                             Description = "Build a pod for the rocket to start",
-                            LastEdited = 81453,
+                            LastEdited = 81458,
                             Name = "Build a starting pod",
                             Priority = 3,
                             ProjectId = 1,
@@ -96,11 +96,11 @@ namespace ProjectManagementApi.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAtDate = 81453,
+                            CreatedAtDate = 81458,
                             CreatedById = 2,
-                            DeadlineDate = 81488,
+                            DeadlineDate = 81493,
                             Description = "Build a rocket to take the shuttle outside the atmosphere",
-                            LastEdited = 81453,
+                            LastEdited = 81458,
                             Name = "Build a rocket",
                             Priority = 2,
                             ProjectId = 1,
@@ -150,16 +150,16 @@ namespace ProjectManagementApi.Migrations
                         {
                             Id = 1,
                             JobId = 1,
-                            StartedAtDate = 81453,
-                            StartedAtTime = 176776,
+                            StartedAtDate = 81458,
+                            StartedAtTime = 7206727,
                             UserId = 3
                         },
                         new
                         {
                             Id = 2,
                             JobId = 2,
-                            StartedAtDate = 81453,
-                            StartedAtTime = 176776,
+                            StartedAtDate = 81458,
+                            StartedAtTime = 7206727,
                             UserId = 4
                         });
                 });
@@ -217,11 +217,11 @@ namespace ProjectManagementApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAtDate = 81453,
+                            CreatedAtDate = 81458,
                             CreatedById = 2,
-                            DeadlineDate = 81553,
+                            DeadlineDate = 81558,
                             Description = "Building a spaceship that will get us to Mars",
-                            LastEdited = 81453,
+                            LastEdited = 81458,
                             Name = "Spaceship to Mars",
                             Priority = 2,
                             Status = 0
@@ -278,9 +278,9 @@ namespace ProjectManagementApi.Migrations
                         {
                             Id = 1,
                             Avatar = "",
-                            CreatedAtDate = 81453,
+                            CreatedAtDate = 81458,
                             FirstName = "Rick",
-                            LastEdited = 81453,
+                            LastEdited = 81458,
                             LastName = "Sanchez",
                             Login = "sancheezium",
                             Password = "1234",
@@ -290,9 +290,9 @@ namespace ProjectManagementApi.Migrations
                         {
                             Id = 2,
                             Avatar = "",
-                            CreatedAtDate = 81453,
+                            CreatedAtDate = 81458,
                             FirstName = "Morty",
-                            LastEdited = 81453,
+                            LastEdited = 81458,
                             LastName = "Smith",
                             Login = "morty",
                             Password = "1234",
@@ -302,24 +302,26 @@ namespace ProjectManagementApi.Migrations
                         {
                             Id = 3,
                             Avatar = "",
-                            CreatedAtDate = 81453,
+                            CreatedAtDate = 81458,
                             FirstName = "Summer",
-                            LastEdited = 81453,
+                            LastEdited = 81458,
                             LastName = "Smith",
                             Login = "sumsum",
                             Password = "1234",
+                            SupervisorId = 2,
                             UserType = 2
                         },
                         new
                         {
                             Id = 4,
                             Avatar = "",
-                            CreatedAtDate = 81453,
+                            CreatedAtDate = 81458,
                             FirstName = "Bird",
-                            LastEdited = 81453,
+                            LastEdited = 81458,
                             LastName = "Person",
                             Login = "bird_person",
                             Password = "birb",
+                            SupervisorId = 2,
                             UserType = 2
                         });
                 });

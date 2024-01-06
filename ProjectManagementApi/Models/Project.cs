@@ -9,7 +9,7 @@ namespace ProjectManagementApi.Models
         public string Description { get; set; }
         public ProjectStatus Status { get; set; }
         public int CreatedById { get; set; }
-        public User CreatedBy { get; set; }
+        public User? CreatedBy { get; set; }
         public int CreatedAtDate { get; set; }
         public int LastEdited { get; set; }
         public int? EndedAtDate { get; set; }

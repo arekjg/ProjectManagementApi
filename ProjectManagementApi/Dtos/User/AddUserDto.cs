@@ -1,5 +1,4 @@
 ﻿using ProjectManagementApi.Helper;
-using ProjectManagementApi.Models;
 
 namespace ProjectManagementApi.Dtos
 {
@@ -11,8 +10,7 @@ namespace ProjectManagementApi.Dtos
         public int CreatedAtDate { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-        public string? Avatar{ get; set; }
+        public string? Avatar { get; set; }
         public int? SupervisorId { get; set; }
-        public User? Supervisor { get; set; }
     }
 }

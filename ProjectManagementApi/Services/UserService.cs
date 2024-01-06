@@ -82,7 +82,7 @@ namespace ProjectManagementApi.Services
                 user.UserType = updatedUser.UserType;
                 user.FirstName = updatedUser.FirstName;
                 user.LastName = updatedUser.LastName;
-                user.Supervisor = updatedUser.Supervisor;
+                user.SupervisorId = updatedUser.SupervisorId;
 
                 _context.Users.Update(user);
                 await _context.SaveChangesAsync();

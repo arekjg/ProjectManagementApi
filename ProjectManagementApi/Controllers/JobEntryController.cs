@@ -9,8 +9,6 @@ namespace ProjectManagementApi.Controllers
     [ApiController]
     public class JobEntryController : ControllerBase
     {
-        // TODO: Test the controller
-
         private readonly IJobEntryService _jobEntryService;
         public JobEntryController(IJobEntryService jobEntryService)
         {
