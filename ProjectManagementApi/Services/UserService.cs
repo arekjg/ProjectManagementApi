@@ -23,7 +23,8 @@ namespace ProjectManagementApi.Services
             await _context.Users.AddAsync(_mapper.Map<User>(newUser));
             await _context.SaveChangesAsync();
 
-            return _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToList();
+            var users = await _context.Users.ToListAsync();
+            return _mapper.Map<List<GetUserDto>>(users);
         }
 
         public async Task<List<GetUserDto>> DeleteUser(int id)
@@ -35,43 +36,46 @@ namespace ProjectManagementApi.Services
                 await _context.SaveChangesAsync();
             }
 
-            return await _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToListAsync();
+            var users = await _context.Users.ToListAsync();
+            return _mapper.Map<List<GetUserDto>>(users);
         }
 
         public async Task<List<GetUserDto>> GetAllEmployees()
         {
-            return await _context.Users
+            var employees = await _context.Users
                 .Where(u => u.UserType == Helper.UserType.EMPLOYEE)
-                .Select(u => _mapper.Map<GetUserDto>(u))
                 .ToListAsync();
+            return _mapper.Map<List<GetUserDto>>(employees);
         }
 
         public async Task<List<GetUserDto>> GetAllPMs()
         {
-            return await _context.Users
+            var pms = await _context.Users
                 .Where(u => u.UserType == Helper.UserType.PROJECT_MANAGER)
-                .Select(u => _mapper.Map<GetUserDto>(u))
                 .ToListAsync();
+            return _mapper.Map<List<GetUserDto>>(pms);
         }
 
         public async Task<List<GetUserDto>> GetAllUsers()
         {
-            return await _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToListAsync();
+            var users = await _context.Users.ToListAsync();
+            return _mapper.Map<List<GetUserDto>>(users);
         }
 
         public async Task<List<GetUserDto>> GetEmployeesByPMId(int id)
         {
-            return await _context.Users
+            var employees = await _context.Users
                 .Where(u => u.SupervisorId == id)
-                .Select(u => _mapper.Map<GetUserDto>(u))
                 .ToListAsync();
+            return _mapper.Map<List<GetUserDto>>(employees);
         }
 
-        public async Task<GetUserDto> GetUserById(int id)
+        public async Task<GetUserDto?> GetUserById(int id)
         {
-            return _mapper.Map<GetUserDto>(await _context.Users
+            var user = await _context.Users
                 .Include(u => u.Supervisor)
-                .FirstOrDefaultAsync(u => u.Id == id));
+                .FirstOrDefaultAsync(u => u.Id == id);
+            return _mapper.Map<GetUserDto>(user);
         }
 
         public async Task<GetUserDto> UpdateUser(UpdateUserDto updatedUser)
@@ -87,7 +91,6 @@ namespace ProjectManagementApi.Services
                 _context.Users.Update(user);
                 await _context.SaveChangesAsync();
             }
-
             return _mapper.Map<GetUserDto>(user);
         }
     }

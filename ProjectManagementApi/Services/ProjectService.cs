@@ -4,7 +4,6 @@ using ProjectManagementApi.Data;
 using ProjectManagementApi.Dtos;
 using ProjectManagementApi.Interfaces;
 using ProjectManagementApi.Models;
-using System.Net;
 
 namespace ProjectManagementApi.Services
 {
@@ -24,7 +23,8 @@ namespace ProjectManagementApi.Services
             await _context.Projects.AddAsync(_mapper.Map<Project>(newProject));
             await _context.SaveChangesAsync();
 
-            return _context.Projects.Select(p => _mapper.Map<GetProjectDto>(p)).ToList();
+            var projects = await _context.Projects.ToListAsync();
+            return _mapper.Map<List<GetProjectDto>>(projects);
         }
 
         public async Task<List<GetProjectDto>> DeleteProject(int id)
@@ -36,25 +36,30 @@ namespace ProjectManagementApi.Services
                 await _context.SaveChangesAsync();
             }
 
-            return await _context.Projects.Select(p => _mapper.Map<GetProjectDto>(p)).ToListAsync();
+            var projects = await _context.Projects.ToListAsync();
+            return _mapper.Map<List<GetProjectDto>>(projects);
         }
 
         public async Task<List<GetProjectDto>> GetAllProjects()
         {
-             return await _context.Projects.Select(p => _mapper.Map<GetProjectDto>(p)).ToListAsync();
+            var projects = await _context.Projects.ToListAsync();
+             return _mapper.Map<List<GetProjectDto>>(projects);
         }
 
         public async Task<GetProjectDto> GetProjectById(int id)
         {
-            return _mapper.Map<GetProjectDto>(await _context.Projects.FirstOrDefaultAsync(p => p.Id == id));
+            var project = await _context.Projects
+                .Include(p => p.CreatedBy)
+                .FirstOrDefaultAsync(p => p.Id == id);
+            return _mapper.Map<GetProjectDto>(project);
         }
 
         public async Task<List<GetProjectDto>> GetProjectsByPMId(int id)
         {
-            return await _context.Projects
+            var projects = await _context.Projects
                 .Where(p => p.CreatedById == id)
-                .Select(p => _mapper.Map<GetProjectDto>(p))
                 .ToListAsync();
+            return _mapper.Map<List<GetProjectDto>>(projects);
         }
 
         public async Task<GetProjectDto> UpdateProject(UpdateProjectDto updatedProject)

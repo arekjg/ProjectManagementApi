@@ -22,7 +22,9 @@ namespace ProjectManagementApi.Services
         {
             await _context.Jobs.AddAsync(_mapper.Map<Job>(newJob));
             await _context.SaveChangesAsync();
-            return _context.Jobs.Select(j => _mapper.Map<GetJobDto>(j)).ToList();
+
+            var jobs = await _context.Jobs.ToListAsync();
+            return _mapper.Map<List<GetJobDto>>(jobs);
         }
 
         public async Task<List<GetJobDto>> DeleteJob(int id)
@@ -33,31 +35,32 @@ namespace ProjectManagementApi.Services
                 _context.Jobs.Remove(job);
                 await _context.SaveChangesAsync();
             }
-            
-            return await _context.Jobs.Select(j => _mapper.Map<GetJobDto>(j)).ToListAsync();
+
+            var jobs = await _context.Jobs.ToListAsync();
+            return _mapper.Map<List<GetJobDto>>(jobs);
         }
 
         public async Task<List<GetJobDto>> GetAllJobs()
         {
-            return await _context.Jobs.Select(j => _mapper.Map<GetJobDto>(j)).ToListAsync();
+            var jobs = await _context.Jobs.ToListAsync();
+            return _mapper.Map<List<GetJobDto>>(jobs);
         }
 
         public async Task<GetJobDto> GetJobById(int id)
         {
-            // TODO: include children in other methods and entities
-
-            return _mapper.Map<GetJobDto>(await _context.Jobs
+            var job = await _context.Jobs
                 .Include(j => j.CreatedBy)
                 .Include(j => j.Project)
-                .FirstOrDefaultAsync(j => j.Id == id));
+                .FirstOrDefaultAsync(j => j.Id == id);
+            return _mapper.Map<GetJobDto>(job);
         }
 
         public async Task<List<GetJobDto>> GetJobsByProjectId(int id)
         {
-            return await _context.Jobs
+            var jobs = await _context.Jobs
                 .Where(j => j.ProjectId == id)
-                .Select(j => _mapper.Map<GetJobDto>(j))
                 .ToListAsync();
+            return _mapper.Map<List<GetJobDto>>(jobs);
         }
 
         public async Task<List<GetJobDto>> GetJobsByUserId(int id)
@@ -88,7 +91,6 @@ namespace ProjectManagementApi.Services
                 _context.Jobs.Update(job);
                 await _context.SaveChangesAsync();
             }
-
             return _mapper.Map<GetJobDto>(job);
         }
     }

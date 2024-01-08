@@ -10,7 +10,7 @@ namespace ProjectManagementApi.Interfaces
         Task<List<GetUserDto>> GetAllPMs();
         Task<List<GetUserDto>> GetAllUsers();
         Task<List<GetUserDto>> GetEmployeesByPMId(int id);
-        Task<GetUserDto> GetUserById(int id);
+        Task<GetUserDto?> GetUserById(int id);
         Task<GetUserDto> UpdateUser(UpdateUserDto updatedUser);
     }
 }
