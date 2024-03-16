@@ -101,8 +101,7 @@ namespace ProjectManagementApi.Tests.Controller
                     userDto.Should().BeOfType<GetUserDto>();
                     userDto.UserType.Should().Be(UserType.EMPLOYEE);
                 }
-                returnedEmployees.First().FirstName
-                    .Should().BeEquivalentTo("Summer");
+                returnedEmployees.First().FirstName.Should().BeEquivalentTo("Summer");
             }
         }
 
@@ -175,6 +174,36 @@ namespace ProjectManagementApi.Tests.Controller
             result.Should().BeOfType<NotFoundResult>();
         }
 
+        [Fact]
+        public async Task UserController_GetByPMId_ReturnOk()
+        {
+            // Arrange
+            const int pmId = 2;
+            var employees = _usersTestCases.Where(u => u.SupervisorId == pmId).ToList();
+            A.CallTo(() => _userService.GetEmployeesByPMId(pmId)).Returns(employees);
+            var controller = new UserController(_userService);
+
+            // Act
+            var result = await controller.GetByPMId(pmId);
+
+            // Assert
+            result.Should().NotBeNull().And.BeOfType<OkObjectResult>();
+            var okResult = (OkObjectResult)result;
+            okResult.Value.Should().NotBeNull().And.BeAssignableTo<List<GetUserDto>>();
+
+            var returnedEmployees = okResult.Value as List<GetUserDto>;
+            returnedEmployees.Should().HaveCount(employees.Count);
+
+            if (returnedEmployees != null)
+            {
+                foreach (var userDto in returnedEmployees)
+                {
+                    userDto.Should().BeOfType<GetUserDto>();
+                    userDto.UserType.Should().Be(UserType.EMPLOYEE);
+                }
+                returnedEmployees.First().FirstName.Should().BeEquivalentTo("Summer");
+            }
+        }
 
     }
 }
